@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CommandAPI.Models;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CommandAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/commands")]
     [ApiController]
     public class CommandsController : ControllerBase
     {
@@ -21,6 +22,18 @@ namespace CommandAPI.Controllers
         public ActionResult<CommandModel> Get()
         {
             return Ok(_commandService.GetCommands());
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<CommandModel> GetCommandById(Guid id)
+        {
+            var command = _commandService.GetCommand(id);
+            if (command == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(command);
         }
     }
 }
